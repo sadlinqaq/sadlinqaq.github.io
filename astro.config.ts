@@ -36,7 +36,7 @@ export default defineConfig({
 
   // [Adapter]
   // https://docs.astro.build/en/guides/deploy/
-  adapter: vercel({ imageService: true }),
+  // adapter: vercel({ imageService: true }),
   // output: 'server',
   output: 'static',
   // Local (standalone)
@@ -46,7 +46,10 @@ export default defineConfig({
   // [Assets]
   image: {
     responsiveStyles: true,
-    service: { entrypoint: 'astro/assets/services/sharp' },
+    service: { 
+      entrypoint: 'astro/assets/services/noop'
+      // entrypoint: 'astro/assets/services/sharp'
+     },
     remotePatterns: [
       // Allow improve Github activity chart
       {
