@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Astro Theme Pure
 
 English | [简体中文](./README-zh-CN.md)
@@ -97,3 +98,7 @@ Other third party references are on [Docs#Contributions](https://astro-pure.js.o
 This project is licensed under the Apache 2.0 License.
 
 [![Star History Chart](https://api.star-history.com/svg?repos=cworld1/astro-theme-pure&type=Date)](https://star-history.com/#cworld1/astro-theme-pure&Date)
+=======
+# sadlinqaq.github.io
+My personal blog
+>>>>>>> 147026be2a6d9d7a608f9590a29a2bf72a63d068
