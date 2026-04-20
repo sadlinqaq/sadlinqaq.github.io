@@ -26,7 +26,6 @@ import config from './src/site.config.ts'
 export default defineConfig({
   // [Basic]
   site:'https://sadlinqaq.github.io',
-  base:'/AAA',
   // site: 'https://astro-pure.js.org',
   // Deploy to a sub path
   // https://astro-pure.js.org/docs/setup/deployment#platform-with-base-path
@@ -38,7 +37,8 @@ export default defineConfig({
   // [Adapter]
   // https://docs.astro.build/en/guides/deploy/
   adapter: vercel({ imageService: true }),
-  output: 'server',
+  // output: 'server',
+  output: 'static',
   // Local (standalone)
   // adapter: node({ mode: 'standalone' }),
   // output: 'server',
