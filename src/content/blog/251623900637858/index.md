@@ -6,7 +6,7 @@ tags:
   - Spring Cloud
   - 微服务
   - 分布式
-heroImage: { src: './thumbnail.png', alt: 'an image targeting my article', color: '#ecd1c8' }
+heroImage: { src: './thumbnail.png', alt: 'an image targeting my article', color: '#EDB6FA' }
 ---
 
 ## <span style="color:#BBF3F7">Spring Cloud</span>
