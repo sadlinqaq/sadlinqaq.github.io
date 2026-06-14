@@ -11,6 +11,12 @@ heroImage: { src: './thumbnail.png', alt: 'an image targeting my article', color
 
 赋予计算机学习的能力
 
+## <span style="color:#9999ff">机械学习库（python-scikit-learn）</span>
+
+```shell
+pip install sklearn
+```
+
 ## <span style="color:#9999ff">常用术语</span>
 <a id="table"></a>
 **示例表格：**
@@ -44,7 +50,7 @@ heroImage: { src: './thumbnail.png', alt: 'an image targeting my article', color
 
 用来测试模型的数据集
 
-> 我们可以把编号（1-4）的数据作为训练集，编号（5-6）作为测试集，把训练集的特征(x_train)与标签(y_train)放入模型训练；训练完毕后，把测试集的特征(x_test)放入模型预测出标签(y_test),接着可以比对原来的标签(模型评估)
+> 可以把编号（1-4）的数据作为训练集，编号（5-6）作为测试集，把训练集的特征(x_train)与标签(y_train)放入模型训练；训练完毕后，把测试集的特征(x_test)放入模型预测出标签(y_test),接着可以比对原来的标签(模型评估)
 
 ## <span style="color:#9999ff">机器学习算法分类</span>
 
@@ -83,7 +89,7 @@ heroImage: { src: './thumbnail.png', alt: 'an image targeting my article', color
 
 ### <span style="color:#99ccff">获取数据</span>
 
-获取经验数据，包括图像数据，文本数据...可以利用已有的官方或三方的数据集
+获取经验数据，包括图像数据，文本数据...
 
 ### <span style="color:#99ccff">数据基本处理</span>
 
@@ -125,7 +131,6 @@ scaler = MinMaxScaler()
 
 # 归一化数据
 print(scaler.fit_transform(x_train))
-
 ```
 
 **输出**
@@ -157,8 +162,6 @@ scaler = StandardScaler()
 
 # 标准化数据
 print(scaler.fit_transform(x_train))
-
-
 ```
 
 **输出**
@@ -187,7 +190,7 @@ print(scaler.fit_transform(x_train))
 
 #### * KNN算法(k近邻)
 
-**描述：**  [KNN](#knn)，基于距离度量，找出离待测样本最近的 K 个邻居，通过投票（分类）或平均（回归）决定结果。
+**描述：** [KNN算法](#knn)，基于距离度量，找出离待测样本最近的 K 个邻居，通过投票（分类）或平均（回归）决定结果。
 
 **解决问题：** 小规模、低维度的分类与回归，无需训练过程。
 
@@ -196,7 +199,7 @@ print(scaler.fit_transform(x_train))
 
 #### * 线性回归
 
-**描述：** 拟合特征与目标之间的线性关系 y=wx+b，最小化均方误差求解权重。
+**描述：** [线性回归](#xxhg)，拟合特征与目标之间的线性关系 y=wx+b，最小化均方误差求解权重。
 
 **解决问题：** 预测连续数值，如房价、气温、销售额等。
 
@@ -241,32 +244,172 @@ print(scaler.fit_transform(x_train))
 
 ### <span style="color:#99ccff">模型评估</span>
 
-
-
-1. 基于训练集的特征和标签，进行重新预测评分
-
-2. 基于测试集的特征和标签，进行重新预测评分
+基于训练集/测试集的特征和标签，进行重新预测评分
 
 ## <span style="color:#9999ff">模型拟合</span>
-<img src="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAEVMPxqJqyfASdQqQj-Bty0_ShXuNrIwQACrjMAApLWMVWAMwTJWnklXzsE.png" alt="拟合曲线"
+<img src="https://i-blog.csdnimg.cn/direct/31fe17696bd8425d95393cfec1607219.png" alt="初音未来"
 style="height:500px">
 
-### 拟合
+### <span style="color:#99ccff">拟合</span>
 
 模型在**训练集**和**测试集**表现都**好**
 
-### 欠拟合
+#### 示例代码
 
-模型在**训练集**和**测试集**表现都**不好**
+```py
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error
 
-### 过拟合
+#生成数据
+np.random.seed(666)
+x = np.random.uniform(-3.0,3.0,size=100)
+y = 0.5 * x**2 + x + 3 + np.random.normal(0,1,size=100)
+
+#创建模型
+estimator = LinearRegression()
+# 数据集的形状 [1,2,3]->[[1],[2],[3]]
+X=x.reshape(-1,1)
+# 数据集的形状 [[1],[2],[3]]->[[1,2],[2,4],[3,9]]
+X2=np.hstack([X,X**2])
+estimator.fit(X2,y)
+
+#预测
+y_predict = estimator.predict(X2)
+
+#计算均方误差
+myret = mean_squared_error(y,y_predict)
+#print(f'均方误差{myret}')
+
+plt.scatter(x,y)
+# 对x排序，然后取x排序后的y值
+plt.plot(np.sort(x),y_predict[np.argsort(x)],c='r')
+plt.show()
+```
+
+### <span style="color:#99ccff">欠拟合</span>
+
+模型过于简单，模型在**训练集**和**测试集**表现都**不好**
+
+#### 示例代码
+
+```py
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error
+
+#生成数据
+np.random.seed(666)
+x = np.random.uniform(-3.0,3.0,size=100)
+y = 0.5 * x**2 + x + 3 + np.random.normal(0,1,size=100)
+
+#创建模型
+estimator = LinearRegression()
+# 数据集的形状 [1,2,3]->[[1],[2],[3]]
+X=x.reshape(-1,1)
+estimator.fit(X,y)
+
+#预测
+y_predict = estimator.predict(X)
+
+#计算均方误差
+myret = mean_squared_error(y,y_predict)
+#print(f'均方误差{myret}')
+
+plt.scatter(x,y)
+plt.plot(x,y_predict,c='r')
+plt.show()
+```
+
+#### 解决方案
+
+增加模型复杂度（添加其他**特征**，添加**多项式特征**）
+
+### <span style="color:#99ccff">过拟合</span>
 
 模型在**训练集**表现**好**但**测试集**表现**不好**
 
-## <span style="color:#9999ff">机械学习库（python-scikit-learn）</span>
+#### 示例代码
 
-```shell
-pip install sklearn
+```py
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error
+
+#生成数据
+np.random.seed(666)
+x = np.random.uniform(-3.0,3.0,size=100)
+y = 0.5 * x**2 + x + 3 + np.random.normal(0,1,size=100)
+
+#创建模型
+estimator = LinearRegression()
+# 数据集的形状 [1,2,3]->[[1],[2],[3]]
+X=x.reshape(-1,1)
+# 数据增加高次项
+X2=np.hstack([X,X**2,X**3,X**4,X**5,X**6,X**7,X**8,X**9,X**10])
+estimator.fit(X2,y)
+
+#预测
+y_predict = estimator.predict(X2)
+
+#计算均方误差
+myret = mean_squared_error(y,y_predict)
+#print(f'均方误差{myret}')
+
+plt.scatter(x,y)
+# 对x排序，然后取x排序后的y值
+plt.plot(np.sort(x),y_predict[np.argsort(x)],c='r')
+plt.show()
+```
+
+#### 解决方法
+
+原始特征过多，存在一些嘈杂特征，模型过于复杂是因为模型尝试取兼顾各个测试数据点
+
+* 重新清洗数据
+* 增大数据量的训练量
+* 正则化
+* 减少维度特征
+
+**正则化**
+
+训练模型中，某些特征影响模型复杂度、或者某个特征的异常值较多，所有要尽可能减少这个特征值的影响，即调整该特征的**权重W**
+
+##### L1正则化
+
+**在损失函数中添加L1正则化项：**
+$$
+J(w)=MSE(w)+α\sum^{n}_{i=1}|w_i|
+$$
+
+* α：叫做惩罚系数，该值越大，对权重调整幅度越大，即惩罚力度越大
+
+* L1 正则化会趋向于0，甚至等于0，使得某些特征失效，达到筛选的目的
+
+**回归模型(Lass回归模型)**
+
+```py
+from sklearn.linear_model import Lasso
+estimator = Lasso(alpha=0.1) #alpha惩罚系数
+```
+
+##### L2正则化
+
+**在损失函数中添加L2正则化项：**
+$$
+J(w)=MSE(w)+α\sum^{n}_{i=1}|w_i^2|
+$$
+
+* L2正则化会趋向于0，一般不等于0
+
+**回归模型(Lass回归模型)**
+
+```py
+from sklearn.linear_model import Ridge
+estimator = Ridge(alpha=10) #alpha惩罚系数
 ```
 
 <a id="knn"></a>
@@ -413,13 +556,208 @@ print(f'预测结果：{Classifier.predict(x_test)}')
 print(f'预测概率：{Classifier.predict_proba(x_test)}')
 print(f'交叉验证结果：{Classifier.cv_results_}')
 ```
+<a id="xxhg"></a>
+## <span style="color:#9999ff">线性回归</span>
+
+利用回归方程(函数)对一个或多个自变量(特征值)和因变量(目标值)之间的关系
+
+### <span style="color:#99ccff">数学公式</span>
+
+#### 一元线性回归
+
+即一个特征
+$$
+y=wx+b(weight(权重),bias(偏置))
+$$
+
+#### 多元线性回归
+
+即多个特征
+$$
+y=W^TX+b(X=(x_1,x_2...)^T,W=(w_1,w_2...)^T)
+$$
+
+### <span style="color:#99ccff">损失函数</span>
+
+衡量每个样本的**预测值**和**真实值**之间效果的函数，让损失函数最小，就是让误差和小，线性回归效率，评估就越高
+
+#### 损失函数分类
+
+##### 均方误差(Mean-Square Error,MSE)
+
+每个样本的点的误差的平方和
+$$
+J(w,b) = \frac{1}{m}\sum^m_{i=0}(h(x_i)-y_i)^2
+$$
+
+##### 平均绝对误差(Mean Absolute Error,MAE)
+
+每个样本点的误差绝对值和
+$$
+J(w,b) = \frac{1}{m}\sum^m_{i=0}|h(x_i)-y_i)|
+$$
+
+##### 均方根误差(Root Mean Squared Error,RMSE)
+
+$$
+J(w,b) = \sqrt{\frac{1}{m}\sum^m_{i=0}(h(x_i)-y_i)^2}
+$$
 
 
 
+### <span style="color:#99ccff">求解损失函数最小</span>
+
+#### 正规方程法
+
+通过一次计算，可以直接得出方程解，即权重W和偏置b，以一元线性回归为例
+
+##### 回归损失函数:
+
+$$
+J(k,b) =\sum^m_{i=0}(h(x_i)-y_i)^2=\sum^m_{i=0}(kx_i+b-y_i)^2
+$$
+先对k求偏导
+$$
+①\frac{\partial J(k,b)}{\partial  k}=k\sum^m_{i=1}x_i^2+b\sum^m_{i=1}x_i-\sum^m_{i=1}x_iy_i
+$$
+再对b求偏导
+$$
+②\frac{\partial J(k,b)}{\partial b}=k\sum^m_{i=1}x_i+bm-\sum^m_{i=1}y_i
+$$
+将①式 和② 式联立方程，将x特征值带入，y标签值代入，求解二元一次方程权重k和偏置b。
+
+##### 示例代码
+
+```py
+import pandas as pd
+import numpy as np
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import root_mean_squared_error, mean_absolute_error, mean_squared_error
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+
+#加载波士顿房价数据
+data_url = "http://lib.stat.cmu.edu/datasets/boston"
+raw_df = pd.read_csv(data_url,sep="\\s+",skiprows=22,header=None)
+data = np.hstack([raw_df.values[::2,:],raw_df.values[1::2,:2]])
+target = raw_df.values[1::2,2]
+
+#print(f'特征值数据{ data[:5]}')
+#print(f'标签数据{ target[:5]}')
+
+#划分数据集
+x_train, x_test, y_train, y_test = train_test_split(data,target,test_size=0.2,random_state=23)
+
+#数据标准化
+transfer = StandardScaler()
+x_train = transfer.fit_transform(x_train)
+x_test = transfer.transform(x_test)
+
+#创建模型 正规方程模型对象
+estimator = LinearRegression(fit_intercept= True) # 设置有截距项
+estimator.fit(x_train,y_train)
+# 打印权重和截距
+print(f'参数{estimator.coef_}')
+print(f'截距{estimator.intercept_}')
+
+# 预测
+y_predict = estimator.predict(x_test)
+# print(f'预测结果{y_predict[:5]}')
+
+#评估
+print(f'均方误差{mean_squared_error(y_test,y_predict)}')
+print(f'均方根误差{root_mean_squared_error(y_test,y_predict)}')
+print(f'平均绝对误差{mean_absolute_error(y_test,y_predict)}')
+```
 
 
 
+#### 梯度下降算法
 
+循环迭代求当前点的梯度，沿着梯度下降的方向求解极小值
+
+##### 梯度
+
+* 单变量函数中，梯度就是某一点切线的斜率（导数）
+* 多变量函数中，梯度就是某一个点的偏导数
+
+##### 梯度下降公式
+
+$$
+θ_{i+1}=θ_i-α\frac{\partial}{\partial θ_i}J(θ)
+$$
+
+α：学习率，不能太大也不能太小，一般在0.001~0.01
+
+θ：权重w
+
+**以多元线性回归均方差作为损失函数为例**
+$$
+\frac{\partial}{\partial θ_i}J(θ)=\frac{1}{m}\sum^m_{i=1}(h_θ(x_i)-y_i)x_i
+$$
+一般以正态分布（0，1）生成所有θ值为初始值，通过迭代不断优化θ取值
+
+##### 梯度下降分类
+
+* **全梯度下降算法 FGD(Ful Gradient Descent)**
+
+  每次迭代使用全部样本求梯度值，有m个样本，求梯度时用了所有m个样本
+
+* **随机梯度下降算法 SGD**
+
+  每次迭代时，随机选择使用一个样本求梯度值
+
+* **小批量下降算法 mini-batch**
+
+  使用小批量样本求梯度值
+
+* **随机平均梯度下降算法 SAG**
+
+  随机选择一个样本的梯度值和以往样本的梯度值的均值
+
+##### 示例代码
+
+```py
+import pandas as pd
+import numpy as np
+from sklearn.linear_model import SGDRegressor
+from sklearn.metrics import root_mean_squared_error, mean_absolute_error, mean_squared_error
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+
+#加载波士顿房价数据
+data_url = "http://lib.stat.cmu.edu/datasets/boston"
+raw_df = pd.read_csv(data_url,sep="\\s+",skiprows=22,header=None)
+data = np.hstack([raw_df.values[::2,:],raw_df.values[1::2,:2]])
+target = raw_df.values[1::2,2]
+
+#print(f'特征值数据{ data[:5]}')
+#print(f'标签数据{ target[:5]}')
+
+#划分数据集
+x_train, x_test, y_train, y_test = train_test_split(data,target,test_size=0.2,random_state=23)
+
+#数据标准化
+transfer = StandardScaler()
+x_train = transfer.fit_transform(x_train)
+x_test = transfer.transform(x_test)
+
+#创建模型 随机梯度下降 线性回归模型对象
+estimator = SGDRegressor(fit_intercept= True,learning_rate='constant',eta0=0.01) # 设置有截距项,学习率不改变,为0.01
+estimator.fit(x_train,y_train)
+# 打印权重和截距
+print(f'参数{estimator.coef_}')
+print(f'截距{estimator.intercept_}')
+
+# 预测
+y_predict = estimator.predict(x_test)
+# print(f'预测结果{y_predict[:5]}')
+
+#评估
+print(f'均方误差{mean_squared_error(y_test,y_predict)}')
+print(f'均方根误差{root_mean_squared_error(y_test,y_predict)}')
+print(f'平均绝对误差{mean_absolute_error(y_test,y_predict)}')
+```
 
 
 
