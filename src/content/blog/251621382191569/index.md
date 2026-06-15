@@ -208,7 +208,7 @@ print(scaler.fit_transform(x_train))
 
 #### * 逻辑回归
 
-**描述：** 在线性回归基础上套一层 Sigmoid 函数，将输出映射到 (0,1) 区间，用于概率估计。
+**描述：** [逻辑回归](#ljhg)，在线性回归基础上套一层 Sigmoid 函数，将输出映射到 (0,1) 区间，用于概率估计。
 
 **解决问题：** 二分类问题（可扩展到多分类），如垃圾邮件识别、疾病预测。
 
@@ -245,6 +245,16 @@ print(scaler.fit_transform(x_train))
 ### <span style="color:#99ccff">模型评估</span>
 
 基于训练集/测试集的特征和标签，进行重新预测评分
+
+**例如模型分类的问题：**
+
+```py
+from sklearn.metrics import accuracy_score
+# 基于测试集的标签与预测值进行打分
+print(f'模型准确度为{accuracy_score(y_test,y_pre)}') #模型准确度为0.9666...
+```
+
+
 
 ## <span style="color:#9999ff">模型拟合</span>
 <img src="https://i-blog.csdnimg.cn/direct/31fe17696bd8425d95393cfec1607219.png" alt="初音未来"
@@ -449,8 +459,6 @@ print(f'预测值为{y_pre}')
 ```shell
 预测值为[1]
 ```
-
-
 
 ### <span style="color:#99ccff">回归问题</span>
 
@@ -758,6 +766,78 @@ print(f'均方误差{mean_squared_error(y_test,y_predict)}')
 print(f'均方根误差{root_mean_squared_error(y_test,y_predict)}')
 print(f'平均绝对误差{mean_absolute_error(y_test,y_predict)}')
 ```
+
+<a id="ljhg"></a>
+## <span style="color:#9999ff">逻辑回归</span>
+
+解决二分类问题，把线性回归的输出，作为逻辑回归的输入，输出是（0，1）之间的值
+
+### <span style="color:#99ccff">Sigmoid函数</span>
+
+把线性回归输出（-∞，+∞）映射导（0，1）
+
+**数学公式：**
+$$
+f(x)=\frac{1}{1+e^{-x}}
+$$
+
+### <span style="color:#99ccff">损失函数</span>
+
+**公式：**
+$$
+Loss(L)=-\sum^m_{i=1}(y_ilog(p_i)+(1-y_i)log(1-p_i))
+$$
+通过梯度下降算法，更新逻辑回归算法的权重参数
+
+### <span style="color:#99ccff">评估方法</span>
+
+#### 混淆矩阵
+
+|          |        预测正例         |         预测反例         |
+| :------: | :---------------------: | :----------------------: |
+| 真实正例 | 真正例TP(Ture Positive) | 伪反例FN(False Negative) |
+| 真实假例 |        伪正例FP         |         真反例TN         |
+
+**样例：**
+
+已知10个样本，有个6个恶性肿瘤样本，4个良性肿瘤样本，假设恶性肿瘤为正；模型预测对了3个恶性肿瘤样本，4个良性肿瘤样本
+
+|           | 预测正例 | 预测反例 |
+| :-------: | :------: | :------: |
+| 真实正例6 |    3     | 3（6-3） |
+| 真实假例4 | 0（4-4） |    4     |
+
+#### 精确值（precision）
+
+查准率，对正样本的预测正确率。即是预测为正例的所有样本中，正确预测的概率
+
+**计算方法：**
+$$
+P=\frac{TP}{TP+FP}
+$$
+
+#### 召回率（Recall）
+
+查全率，指的是预测正样例占真实正样例的比例
+
+**计算方法：**
+$$
+P=\frac{TP}{TP+FN}
+$$
+
+#### F1-score
+
+综合精确值和召回率能力
+
+**计算方法：**
+$$
+P=\frac{2*Precision*Recall}{Precision+Recall}
+$$
+
+#### 
+
+
+
 
 
 
